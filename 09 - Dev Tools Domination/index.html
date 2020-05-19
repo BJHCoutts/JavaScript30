@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+      console.log("Standard log")
+    // Interpolated
+      console.log('Hello this is a %s string', '-what is this added in?-')
+    // Styled
+      console.log('%c I am some great text', 'font-size:50px; background:green; text-shadow: 10px 10px 0 red')
+    // warning!
+      console.warn("This is a warning!")
+    // Error :|
+      console.error("This is an error!")
+    // Info
+      console.info('This is a helpful piece of information')
+    // Testing
+      console.assert(1===2, 'This is showing because 1===2 is incorrect. console.assert')
+    // clearing
+      console.log('console.clear() will clear this log')
+    // Viewing DOM Elements
+      const p = document.querySelector('p');
+      console.log('log', p)
+      console.dir(p)
+    // Grouping together
+      dogs.forEach(dog => {
+        // console.group(`Group name: ${dog.name}`)
+        console.groupCollapsed(`Group name: ${dog.name}`)
+        console.log(`This Dog's name is ${dog.name}`)
+        console.log(`It is ${dog.age} years old`)
+        console.log(`It is ${dog.age * 7} dog years old`)
+        console.groupEnd(`Group name: ${dog.name}`)
+      })
+    // counting
+      console.count('Meeee')
+      console.count('Meeee')
+      console.count('Meeee')
+    // timing
+      console.time('fetch request')
+      fetch('https://api.github.com/users/wesbos')
+        .then(res => res.json())
+        .then(data => {
+          console.timeEnd('fetch request')
+          console.log(data)
+        }
+      )
+      // async function fetchRequest () {
+      const fetchRequest = async () => {
+        let res = await fetch('https://api.github.com/users/wesbos')
+        let data = await res.json()
+        return data
+      }
+
+      fetchRequest().then(data => console.log(data))
+
+      console.table(dogs)
+
+  </script>
+</body>
+</html>

@@ -21,8 +21,31 @@ function updateButton() {
 }
 
 function skip() {
-	
+	console.log(video.currentTime)
+	video.currentTime += parseInt(this.dataset.skip)
 }
+
+function handleRangeUpdate() {
+	video[this.name] = this.value
+	console.log(this.name) 
+	console.log(this.value) 
+}
+
+function handleProgress() {
+	const percent = (video.currentTime/video.duration) * 100
+	progressBar.style.flexBasis = `${percent}%`
+}
+
+function scrub(e) {
+	const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration
+	video.currentTime = scrubtime
+}
+
+document.addEventListener('keyup', e  => {
+  if (e.code === 'Space') {
+    togglePlay()
+  }
+})
 
 video.addEventListener('click', togglePlay)
 
@@ -31,8 +54,21 @@ video.addEventListener('play', updateButton)
 video.addEventListener('pause', updateButton)
 
 toggle.addEventListener('click', togglePlay)
-document.body.onekeyup = function(e) {
-	if (e.keyCode=== 32) {
-		togglePlay()
-	}
-}
+
+skipButtons.forEach(button => button.addEventListener('click', skip))
+
+ranges.forEach(range => range.addEventListener('change', handleRangeUpdate))
+
+ranges.forEach(range => range.addEventListener('mousemove', handleRangeUpdate))
+
+video.addEventListener('timeupdate', handleProgress)
+
+progress.addEventListener('click', scrub)
+
+let mousedown = false
+
+progress.addEventListener('mousedown', () => mousedown = true)
+
+progress.addEventListener('mouseup', () => mousedown = false)
+
+progress.addEventListener('mousemove', (e) => mousedown && scrub(e))
